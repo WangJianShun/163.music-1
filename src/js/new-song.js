@@ -12,11 +12,14 @@
       this.model = model
       this.view = view
       this.view.render(this.model.data)
+      window.eventHub.on('upload',(data)=>{
+        
+       this.active()
+      })
     },
-    active(){
+    active() {
       $(this.view.el).addClass('active')
     }
   }
-  controller.init(view,model)
-window.app.newSong=controller
+  controller.init(view, model)
 }

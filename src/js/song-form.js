@@ -6,7 +6,7 @@
         <div class="row">
           <label>
             歌名
-            <input type="text">
+            <input type="text" value="__key__">
           </label>
         </div>
         <div class="row">
@@ -18,7 +18,7 @@
         <div class="row">
           <label>
             外链
-            <input type="text">
+            <input type="text" value="__link__">
           </label>
         </div>
 
@@ -29,8 +29,13 @@
 
       </form>
       `,
-    render(data) {
-      $(this.el).html(this.template)
+    render(data={}) {
+      let placeholders=['key','link']
+      let html=this.template
+      placeholders.map((string)=>{
+        html=html.replace(`__${string}__`,data[string]||'')
+      })
+      $(this.el).html(html)
     }
   }
   let model = {}
@@ -39,11 +44,13 @@
       this.view =view
       this.model=model
       this.view.render(this.model.data)
+      window.eventHub.on('upload',(data)=>{
+        this.view.render(data)
+       
+      })
     },
-    reset(data){
-      console.log('reset')
-    }
+    
   }
   controller.init(view,model)
-  window.app.songForm=controller
+ 
 }

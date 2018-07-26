@@ -1,8 +1,8 @@
 {
   let view = {
     el: '#uploadArea',
-    find(selector){
-      
+    find(selector) {
+
       return $(this.el).find(selector)[0]
     }
   }
@@ -17,7 +17,7 @@
     initqiniu() {
       var uploader = Qiniu.uploader({
         runtimes: 'html5,flash,html4',    //上传模式,依次退化
-        browse_button:this.view.find('#uploadButton'),       //上传选择的点选按钮，**必需**
+        browse_button: this.view.find('#uploadButton'),       //上传选择的点选按钮，**必需**
         uptoken_url: 'http://localhost:8888/uptoken',            //Ajax请求upToken的Url，**强烈建议设置**（服务端提供）
         // uptoken : '', //若未指定uptoken_url,则必须指定 uptoken ,uptoken由其他程序生成
         // unique_names: true, // 默认 false，key为文件名。若开启该选项，SDK为自动生成上传成功后的key（文件名）。
@@ -26,7 +26,7 @@
         get_new_uptoken: false,  //设置上传文件的时候是否每次都重新获取新的token
         max_file_size: '40mb',           //最大文件体积限制
         dragdrop: true,                   //开启可拖曳上传
-        drop_element:this.view.find('#uploadContainer'),       //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
+        drop_element: this.view.find('#uploadContainer'),       //拖曳上传区域元素的ID，拖曳文件或文件夹后可触发上传
 
         auto_start: true,                 //选择文件后自动上传，若关闭需要自己绑定事件触发上传
         init: {
@@ -43,8 +43,7 @@
             // 每个文件上传时,处理相关的事情
           },
           'FileUploaded': function (up, file, info) {
-            window.app.newSong.active()
-            window.app.songForm.reset()
+
             // uploadStatus.textContent = "文件上传成功"
 
             // 每个文件上传成功后,处理相关的事情
@@ -59,7 +58,11 @@
             var response = JSON.parse(info.response);
             var sourceLink = "http://" + domain + "/" + encodeURIComponent(response.key);
             // uploadStatus.textContent = sourceLink + "" + response.key
-            console.log(sourceLink)
+
+            window.eventHub.emit('upload', {
+              link: sourceLink,
+              key: response.key 
+            })
           },
           'Error': function (up, err, errTip) {
             //上传出错时,处理相关的事情
