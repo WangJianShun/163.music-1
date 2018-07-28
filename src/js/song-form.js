@@ -6,28 +6,27 @@
     },
     template: `
     <form class="form">
+        <h1>新建歌曲</h1>
         <div class="row">
           <label>
             歌名
-            <input name="name" type="text" value="__name__" style="width:185px;height:25px;">
           </label>
+          <input name="name" type="text" value="__name__" style="width:185px;height:25px;">
         </div>
         <div class="row">
           <label>
             歌手
-            <input name="singer" type="text" value="__singer__" style="width:185px;height:25px;">
           </label>
+          <input name="singer" type="text" value="__singer__" style="width:185px;height:25px;">
         </div>
         <div class="row" >
           <label>
             外链
-            <input name="url" type="text" value="__url__" style="width:185px;height:25px;">
           </label>
+          <input name="url" type="text" value="__url__" style="width:185px;height:25px;">
         </div>
 
-        <div class="row">
           <button type="submit">保存</button>
-        </div>
       </form>
       `,
     render(data = {}) {
@@ -91,7 +90,9 @@
           .then(() => {
             //console.log(this.model.data)
             this.view.reset()
-            window.eventHub.emit('creat',this.model.data)
+            let string=JSON.stringify(this.model.data)
+            let object = JSON.parse(string)   //深拷贝得到一个新的对象
+            window.eventHub.emit('creat',object)
           })
       })
     }
