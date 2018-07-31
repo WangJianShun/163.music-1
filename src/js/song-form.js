@@ -79,6 +79,7 @@
       window.eventHub.on('upload', (data) => {
         this.view.render(data)
       })
+     
     },
     bindEvents() {
       this.view.$el.on('submit', 'form', (e) => {

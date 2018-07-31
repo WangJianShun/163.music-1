@@ -9,7 +9,7 @@
       let $el = $(this.el)
       $el.html(this.template)
       let { songs } = data
-      let liList = songs.map((song) => $('<li></li>').text(song.name))
+      let liList = songs.map((song) => $('<li></li>').text(song.name).attr('data-song-id',song.id))
       $el.find('ul').empty()
       var icon = `<svg class="icon" aria-hidden="true">
       <use xlink:href="#icon-music-off"></use>
@@ -59,6 +59,8 @@
     bindEvents() {
       $(this.view.el).on('click', 'li', (e) => {
         this.view.activeItems(e.currentTarget)
+        let songId=e.currentTarget.getAttribute('data-song-id')
+        window.eventHub.emit('select',{id:songId})
       })
     },
     bindEventsHub() {

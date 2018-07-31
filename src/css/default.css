@@ -79,7 +79,7 @@ aside{
   padding:10px; 
 }
 .newSong.active{
-  background: #ffffff;
+  background: #69a2f1;
   font-family:微软雅黑;
   font-weight: bold;
   box-shadow: 2px 1px 5px -1px rgba(0,0,0,0.75);
