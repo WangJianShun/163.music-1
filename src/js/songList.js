@@ -14,12 +14,15 @@
       var icon = `<svg class="icon" aria-hidden="true">
       <use xlink:href="#icon-music-off"></use>
   </svg>`
-      
-      liList.map((domLi) => {
-        $el.find('ul').append(icon,domLi)
-        
-      })
 
+      liList.map((domLi) => {
+        $el.find('ul').append(icon, domLi)
+
+      })
+    },
+    activeItems(li) {
+      let $li = $(li)
+      $li.addClass('active').siblings('.active').removeClass('active')
     },
     clearActive() {
       $(this.el).find('.active').removeClass('active')
@@ -29,13 +32,13 @@
     data: {
       songs: []
     },
-    find(){
-      var query=new AV.Query('Song')
-      return query.find().then((songs)=>{
-          this.data.songs=songs.map((song)=>{
-            return {id:song.id,...song.attributes}
-          })
-          return songs
+    find() {
+      var query = new AV.Query('Song')
+      return query.find().then((songs) => {
+        this.data.songs = songs.map((song) => {
+          return { id: song.id, ...song.attributes }
+        })
+        return songs
       })
     }
   }
@@ -44,15 +47,27 @@
       this.view = view
       this.model = model
       this.view.render(this.model.data)
+      this.bindEvents()
+      this.bindEventsHub()
+      this.getAllSong()
+    },
+    getAllSong(){
+      this.model.find().then(() => {
+        this.view.render(this.model.data)
+      })
+    },
+    bindEvents() {
+      $(this.view.el).on('click', 'li', (e) => {
+        this.view.activeItems(e.currentTarget)
+      })
+    },
+    bindEventsHub() {
       window.eventHub.on('upload', () => {
         this.view.clearActive()
       })
       window.eventHub.on('creat', (songData) => {
         console.log(songData)
         this.model.data.songs.push(songData)
-        this.view.render(this.model.data)
-      })
-      this.model.find().then(()=>{
         this.view.render(this.model.data)
       })
     }

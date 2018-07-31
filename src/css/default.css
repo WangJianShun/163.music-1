@@ -96,10 +96,10 @@ aside{
   padding:10px;
   display:inline-block;
   width:230px;
+  border-radius: 2px;
 }
 .songList >li.active{
-  background: #d4d4d4;
-
+  background: linear-gradient(120deg, rgb(54, 235, 238) 25%, rgb(166, 177, 221) 64%);
 }
 .upload,
 #uploadArea,
