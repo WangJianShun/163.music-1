@@ -2,27 +2,32 @@
   let view = {
     el: '.songList-container',
     template: `
-    <ul class="songList">
+      <ul class="songList">
       </ul>
     `,
     render(data) {
-      let $el=$(this.el)
+      let $el = $(this.el)
       $el.html(this.template)
-      let {songs}=data 
-      let liList=songs.map((song)=>$('<li></li>').text(song.name))
+      let { songs } = data
+      let liList = songs.map((song) => $('<li></li>').text(song.name))
       $el.find('ul').empty()
-      liList.map((domLi)=>{
-        $el.find('ul').append(domLi)
+      var icon = `<svg class="icon" aria-hidden="true">
+      <use xlink:href="#icon-music-off"></use>
+  </svg>`
+      
+      liList.map((domLi) => {
+        $el.find('ul').append(icon,domLi)
+        
       })
-     
+
     },
-    clearActive(){
+    clearActive() {
       $(this.el).find('.active').removeClass('active')
     }
   }
   let model = {
-    data:{
-      songs:[]
+    data: {
+      songs: []
     }
   }
   let controller = {
@@ -33,7 +38,7 @@
       window.eventHub.on('upload', () => {
         this.view.clearActive()
       })
-      window.eventHub.on('creat',(songData)=>{
+      window.eventHub.on('creat', (songData) => {
         console.log(songData)
         this.model.data.songs.push(songData)
         this.view.render(this.model.data)

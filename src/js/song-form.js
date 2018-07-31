@@ -1,6 +1,6 @@
 {
   let view = {
-    el: '.page>main',
+    el: '.page>main .up',
     init() {
       this.$el = $(this.el)
     },
@@ -29,17 +29,7 @@
           <button type="submit">保存</button>
            
       </form>
-      <div class="upload">
-      <div id="uploadArea">
-        <div id="uploadContainer" class="daaggable">
-          <div id="uploadButton" class="clickable">
-            <span>拖曳或点击上传文件</span>
-            <p>文件大小不能超过40mb</p>
-          </div>
-      </div>
-      
-        </div>
-      </div>
+    
       `,
     render(data = {}) {
       let placeholders = ['name', 'singer', 'url']

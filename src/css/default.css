@@ -5,10 +5,21 @@
 ul,ol{list-style: none;}
 a{color:inherit;text-decoration: none;}
 input{font: inherit;}
+html{
+  height:100%;
+
+}
 body{
   font-size:14px;
   line-height:1.5;
-  height:100vh;
+  height:100%;
+
+}
+.icon {
+  width: 1em; height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
 }
 /*layout*/
 .navBar{
@@ -17,13 +28,12 @@ body{
 }
 .page{
   display: flex;
-  height:100vh;
+  height:100%;
 }
 
 .page > main{
   flex-grow: 1;
-  border:1px dashed blue;
-  background: rgb(175, 171, 171);
+  background: #eeeeee;
   font-size:16px;
   padding-left:30px;
 }
@@ -61,30 +71,31 @@ form > .row > input{
 aside{
   display:flex;
   flex-direction: column;
-  border:1px solid red;
   width:250px;
   border-radius: 10px;
 }
 .newSong{
   text-align: left;
   padding:10px; 
-  border-bottom:1px solid ;
 }
 .newSong.active{
-  background: #d4d4d4;
-  font-family:黑体;
+  background: #ffffff;
+  font-family:微软雅黑;
+  font-weight: bold;
+  box-shadow: 2px 1px 5px -1px rgba(0,0,0,0.75);
 }
 .songList-container{
   flex-grow: 1;
 }
+
 .songList{
   background: #ffffff;
 }
 .songList >li{
   border-bottom:3px solid #eeeeee;
   padding:10px;
-  
-
+  display:inline-block;
+  width:230px;
 }
 .songList >li.active{
   background: #d4d4d4;
@@ -99,9 +110,10 @@ aside{
 }
 #uploadArea{
   margin-top:100px;
-  background: #fff;
+  background: #ffffff;
   padding:50px 0;
   width:970px;
+  border-radius: 3px;
 } 
 #uploadContainer{
   border: 2px dashed #767b7e;
@@ -112,6 +124,15 @@ aside{
   flex-direction: column;
   cursor: pointer;
 }
+#uploadButton{
+  width:100%;
+  height:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 
 p {
   color: rgb(117, 130, 131)
