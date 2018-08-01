@@ -59,7 +59,7 @@
             var sourceLink = "http://" + domain + "/" + encodeURIComponent(response.key);
             // uploadStatus.textContent = sourceLink + "" + response.key
 
-            window.eventHub.emit('upload', {
+            window.eventHub.emit('new', {
               url: sourceLink,
               name: response.key 
             })
