@@ -17,15 +17,17 @@
        this.active()
       })
       window.eventHub.on('select',(data)=>{
-        
         this.deactive()
       })
+      $(this.view.el).on('click',this.active.bind(this))
     },
     deactive(){
       $(this.view.el).removeClass('active')
     },
     active() {
       $(this.view.el).addClass('active')
+     window.eventHub.emit('new')
+
     }
   }
   controller.init(view, model)

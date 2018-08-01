@@ -69,6 +69,7 @@
         }
         
         window.eventHub.emit('select',JSON.parse(JSON.stringify(data)))
+        
       })
     },
     bindEventsHub() {
@@ -79,6 +80,9 @@
         console.log(songData)
         this.model.data.songs.push(songData)
         this.view.render(this.model.data)
+      })
+      window.eventHub.on('new',()=>{
+        this.view.clearActive()
       })
     }
   }
