@@ -156,6 +156,7 @@ p {
   height: 100%;
   z-index: 1;
   background: rgba(0,0,0,0.2);
+  pointer-events: none;
 }
 .site-loading.active{
   visibility: visible;
@@ -174,4 +175,5 @@ p {
   border-radius: 50%;
   animation: loading 1s infinite alternate-reverse;
   animation-timing-function: linear;
+
 }
