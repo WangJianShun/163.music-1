@@ -10,7 +10,7 @@
       </svg>
       {{song.singer}}
     </p>
-    <a href="#" class="playButton">
+    <a href="./song.html?id={{song.id}}" class="playButton">
       <svg class="icon icon-play">
         <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-play"></use>
       </svg>
@@ -28,6 +28,7 @@
         let $li = $(this.template
           .replace('{{song.name}}',song.name)
           .replace('{{song.singer}}',song.singer)
+          .replace('{{song.id}}',song.id)
         )
         this.$el.find('ol.list').append($li)
       })
