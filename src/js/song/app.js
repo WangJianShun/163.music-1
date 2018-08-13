@@ -1,37 +1,49 @@
 //console.log(window.location.search)
 let view = {
   el: '#app',
-  template: `
- <audio src="{{url}}"></audio>
- <button class="play">播放</button>
- <button class="pause">暂停</button>
- `,
- render(data){
-   $(this.el).html(this.template.replace('{{url}}',data.url))
- },
- play(){
-   let autio=$(this.el).find('audio')[0]
-   autio.play()
- },
- pause(){
-  let autio=$(this.el).find('audio')[0]
-  autio.pause()
- }
+  render(data, status) {
+    let { song } = data
+    console.log(song)
+    $(this.el).css('background-image', `url('${song.cover}')`)
+    $(this.el).find('img.cover').attr('src', song.cover)
+    
+    if($(this.el).find('audio').attr('src')!==song.url){
+      $(this.el).find('audio').attr('src', song.url)
+    }
+    if (status === 'palying') {
+      $(this.el).find('.disc-container').addClass('playing')
+    } else {
+      $(this.el).find('.disc-container').removeClass('playing')
+    }
+  },
+  play() {
+    $(this.el).find('audio')[0].play()
+
+  },
+
+  pause() {
+    $(this.el).find('audio')[0].pause()
+
+  }
 }
 let model = {
   data: {
-    id: '',
-    name: '',
-    singer: '',
-    url: ''
+    song: {
+      id: '',
+      name: '',
+      singer: '',
+      url: ''
+    },
+    status: 'paused'
   },
+
   setId(id) {
     this.data.id = id
   },
   get(id) {
     var query = new AV.Query('Song')
     return query.get(id).then((song) => {
-      Object.assign(this.data, { id: song.id, ...song.attributes })
+      Object.assign(this.data.song, { id: song.id, ...song.attributes })
       return song  // 成功获得实例
     })
   }
@@ -47,10 +59,14 @@ let controller = {
     this.bindEvents()
   },
   bindEvents() {
-    $(this.view.el).on('click','.play',()=>{
+    $(this.view.el).on('click', '.icon-play', () => {
+      this.model.status = 'palying'
+      this.view.render(this.model.data, this.model.status)
       this.view.play()
     })
-    $(this.view.el).on('click','.pause',()=>{
+    $(this.view.el).on('click', '.icon-pause', () => {
+      this.model.status = 'paused'
+      this.view.render(this.model.data, this.model.status)
       this.view.pause()
     })
   },

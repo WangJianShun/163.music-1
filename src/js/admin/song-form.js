@@ -24,14 +24,19 @@
           </label>
           <input name="url" type="text" value="__url__" style="width:185px;height:25px;">
         </div>
-
+        <div class="row">
+        <label>
+          封面
+        </label>
+        <input name="cover" type="text" value="__cover__" style="width:185px;height:25px;">
+      </div>
           <button type="submit">保存</button>
            
       </form>
     
       `,
     render(data = {}) {
-      let placeholders = ['name', 'singer', 'url']
+      let placeholders = ['name', 'singer', 'url', 'cover']
       let html = this.template
       placeholders.map((string) => {
         html = html.replace(`__${string}__`, data[string] || '')
@@ -52,7 +57,7 @@
 
   let model = {
     data: {
-      name: '', singer: '', url: '', id: ''
+      name: '', singer: '', url: '', id: '', cover: ''
     },
     create(data) {
 
@@ -64,6 +69,8 @@
       // 设置优先级
       song.set('singer', data.singer);
       song.set('url', data.url);
+      song.set('cover', data.cover);
+      
       return song.save().then((newSong) => {
         let { id, attributes } = newSong
         Object.assign(this.data, {
@@ -81,10 +88,11 @@
       song.set('name', data.name);
       song.set('singer', data.singer);
       song.set('url', data.url);
-
+      song.set('cover', data.cover);
+      console.dir(song)
       // 保存到云端
-      return song.save().then((response)=>{
-        Object.assign(this.data,data)
+      return song.save().then((response) => {
+        Object.assign(this.data, data)
         return response
       })
     }
@@ -112,7 +120,7 @@
       })
     },
     create() {
-      let needs = ['name', 'singer', 'url']
+      let needs = ['name', 'singer', 'url','cover']
       let data = {}
       needs.map((string) => {
         data[string] = this.view.$el.find(`[name="${string}"]`).val()
@@ -127,15 +135,15 @@
         })
     },
     update() {
-      let needs = ['name', 'singer', 'url']
+      let needs = ['name', 'singer', 'url','cover']
       let data = {}
       needs.map((string) => {
         data[string] = this.view.$el.find(`[name="${string}"]`).val()
       })
-       this.model.update(data)
-       .then(()=>{
-         window.eventHub.emit('update',JSON.parse(JSON.stringify(this.model.data)))
-       })
+      this.model.update(data)
+        .then(() => {
+          window.eventHub.emit('update', JSON.parse(JSON.stringify(this.model.data)))
+        })
     },
     bindEvents() {
       this.view.$el.on('submit', 'form', (e) => {
