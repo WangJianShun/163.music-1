@@ -58,6 +58,12 @@ button{
   background: #69a2f1;
   border:none;
 }
+#lyrics{
+  display:block;
+}
+#lyrics textarea{
+  resize:none
+}
 form > .row >label{
   display:inline-block;
 }

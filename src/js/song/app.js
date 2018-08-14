@@ -1,20 +1,46 @@
 //console.log(window.location.search)
 let view = {
   el: '#app',
-  render(data, status) {
-    let { song } = data
-    console.log(song)
+  init() {
+    this.$el = $(this.el)
+  },
+  render(data) {
+    let { song, status } = data
     $(this.el).css('background-image', `url('${song.cover}')`)
     $(this.el).find('img.cover').attr('src', song.cover)
-    
-    if($(this.el).find('audio').attr('src')!==song.url){
-      $(this.el).find('audio').attr('src', song.url)
+
+    if ($(this.el).find('audio').attr('src') !== song.url) {
+      let audio = $(this.el).find('audio').attr('src', song.url).get(0)
+      audio.onended = () => { window.eventHub.emit('songEnd') }
+      audio.ontimeupdate = () => {
+        this.showlyric(audio.currentTime)
+      }
     }
-    if (status === 'palying') {
+    if (status === 'playing') {
       $(this.el).find('.disc-container').addClass('playing')
     } else {
       $(this.el).find('.disc-container').removeClass('playing')
     }
+    this.$el.find('.song-description > h1').text(song.name)
+    let { lyrics } = song
+    let array = lyrics.split('\n').map((string) => {
+      let p = document.createElement('p')
+      let regex = /\[([\d:.]+)\](.+)/
+      let matches = string.match(regex)
+      if (matches) {
+        p.textContent = matches[2]
+        let time = matches[1]
+        let parts = time.split(':')
+        let minutes = parts[0]
+        let seconds = parts[1]
+        let newTime = parseFloat(minutes, 10) * 60 + parseFloat(seconds, 10)
+        p.setAttribute('data.name', newTime)
+      } else {
+        p.textContent = string
+      }
+      this.$el.find('.lyric .lines').append(p)
+    })
+
   },
   play() {
     $(this.el).find('audio')[0].play()
@@ -24,6 +50,24 @@ let view = {
   pause() {
     $(this.el).find('audio')[0].pause()
 
+  },
+  showlyric(time) {
+    let allP = this.$el.find('.lyric>.lines>p')
+    let height
+    let p
+    for (let i = 0; i < allP.length; i++) {
+      let currentTime = allP.eq(i).attr('data.name')
+      let nextTime = allP.eq(i + 1).attr('data.name')
+      if (i === allP.length - 1) {
+      } else if (time >= currentTime && time < nextTime) {
+        p=allP[i]
+         height = allP.eq(i).offset().top - this.$el.find('.lyric >.lines').offset().top
+        break
+      }
+    }
+    
+    this.$el.find('.lyric>.lines').css('transform', `translateY(${-(height-75)}px)`)
+    $(p).addClass('active').siblings('.active').removeClass('active')
   }
 }
 let model = {
@@ -56,18 +100,23 @@ let controller = {
     this.model.get(id).then(() => {
       this.view.render(this.model.data)
     })
+    this.view.init()
     this.bindEvents()
   },
   bindEvents() {
     $(this.view.el).on('click', '.icon-play', () => {
-      this.model.status = 'palying'
-      this.view.render(this.model.data, this.model.status)
+      this.model.data.status = 'playing'
+      this.view.render(this.model.data)
       this.view.play()
     })
     $(this.view.el).on('click', '.icon-pause', () => {
-      this.model.status = 'paused'
-      this.view.render(this.model.data, this.model.status)
+      this.model.data.status = 'paused'
+      this.view.render(this.model.data)
       this.view.pause()
+    })
+    window.eventHub.on('songEnd', () => {
+      this.model.data.status = 'paused'
+      this.view.render(this.view.render)
     })
   },
   getSongId() {

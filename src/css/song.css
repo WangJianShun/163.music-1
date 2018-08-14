@@ -11,7 +11,7 @@
 .disc-container{position: relative; }
 .disc-container .icon-wrapper{position: absolute; z-index: 1; display: flex; 
 	justify-content: center; align-items: center;
-	border: 1px solid white; height: 20vw; width: 20vw;
+	height: 20vw; width: 20vw;
 	border-radius: 50%; background: rgba(0,0,0,0.5);
 }
 .disc-container .icon {width: 10vw; fill: white;}
@@ -48,10 +48,9 @@
 	line-height: 24px;
 }
 .song-description .lines{
-	transition: transform 0.3s;
 }
 .song-description .lyric{
-	height: 72px;
+	height: 200px;
 	overflow: hidden;
 }
 .song-description p.active{
