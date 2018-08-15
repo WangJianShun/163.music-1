@@ -1,4 +1,3 @@
-//console.log(window.location.search)
 let view = {
   el: '#app',
   init() {
