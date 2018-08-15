@@ -26,9 +26,9 @@
       console.log(songs)
       songs.map((song) => {
         let $li = $(this.template
-          .replace('{{song.name}}',song.name)
-          .replace('{{song.singer}}',song.singer)
-          .replace('{{song.id}}',song.id)
+          .replace('{{song.name}}', song.name)
+          .replace('{{song.singer}}', song.singer)
+          .replace('{{song.id}}', song.id)
         )
         this.$el.find('ol.list').append($li)
       })
@@ -42,7 +42,7 @@
       var query = new AV.Query('Song')
       return query.find().then((songs) => {
         this.data.songs = songs.map((song) => {
-          return { id: song.id, ...song.attributes }
+          return Object.assign({ id: song.id }, song.attributes)
         })
         return songs
       })
