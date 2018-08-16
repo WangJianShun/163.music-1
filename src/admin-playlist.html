@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>管理页面</title>
+    <link rel="stylesheet" href="./css/default.css">
+    <script src="//at.alicdn.com/t/font_770863_x6lbg3yexqm.js"></script>
+</head>
+
+<body>
+    <div class="playlistForm-wrapper">
+        <form class="playlistForm">
+            <div class="row">
+                <label for="">歌单名<input type="text" name="name"></label>
+            </div>
+            <div class="row">
+                <label for="">描述简介<textarea name="summary" id="" cols="30" rows="10"></textarea></label>
+            </div>
+            <div class="row">
+                <button type="submit">创建</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.7.3/dist/av-min.js"></script>
+    <script src="./js/initalizers/av.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="./js/admin/event-hub.js"></script>
+    <script src="./js/admin/song-form.js"></script>
+    <script>
+        {
+            let view = {
+                el: '.playlistForm-wrapper',
+                init() {
+                    this.$el = $(this.el)
+                    this.$form = this.$el.find('.playlistForm')
+                }
+            }
+            let model = {
+                creat(data) {
+                    var Playlist = AV.Object.extend('Playlist');
+                    var playlist = new Playlist();
+                    playlist.set('name', data.name);
+                    playlist.set('summary', data.summary);
+                    playlist.save().then((newPlaylist) => {
+                        let { id, attributes } = newPlaylist
+                        Object.assign(this.data, {
+                            id, ...attributes,//attributes有什么就会声明什么
+                        })
+                    }, (error) => {
+                        console.error(error);
+                    });
+                }
+            }
+            let controller = {
+                init(view, model) {
+                    this.view = view
+                    this.model = model
+                    this.view.init()
+                    this.bindEvents()
+                },
+                bindEvents() {
+                    this.view.$el.on('submit', 'form', (e) => {
+                        e.preventDefault()
+                        let form = this.view.$form.get(0)
+                        let data = {}
+                        keys = ['name', 'summary']
+                        keys.reduce((prev, item) => {
+
+                            prev[item] = form[item].value
+                            return prev
+                        }, data)
+                        this.model.creat(data)
+                    })
+                }
+
+            }
+            controller.init(view, model)
+        }
+    /**var Song = AV.Object.extend('Song');
+     var song = new Song();
+     song.set('name', '333');
+
+     var Playlist = AV.Object.extend('Playlist');
+     var playlist = new Playlist();
+     playlist.set('name', '测试标题222');
+     playlist.set('summary', '测试内容222');
+     song.set('dependent', playlist)
+     song.save().then((newPlaylist) => {
+          let { id, attributes } = newPlaylist
+          Object.assign(this.data, {
+              id,
+              ...attributes,//attributes有什么就会声明什么
+          })
+      }, (error) => {
+          console.error(error);
+      });**/
+    </script>
+</body>
+
+</html>
