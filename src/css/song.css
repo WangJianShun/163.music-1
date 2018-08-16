@@ -4,10 +4,19 @@
 @keyframes circle{0% {transform: rotate(0deg); } 100% {transform: rotate(360deg); } }
 
 .page{display: flex; flex-direction: column; height: 100vh;
+	position: relative;
+}
+.bgimg{
+	content:'';
+	position: absolute;
 	background: transparent url(http://p3.music.126.net/z4p2xss2a50qNHe6TLFdoA==/2425522650910827.jpg) no-repeat center;
 	background-size: cover;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	filter: blur(10px)
 }
-
 .disc-container{position: relative; }
 .disc-container .icon-wrapper{position: absolute; z-index: 1; display: flex; 
 	justify-content: center; align-items: center;
@@ -47,7 +56,8 @@
 	font-size: 14px;
 	line-height: 24px;
 }
-.song-description .lines{
+.song-description .lines >p{
+	font-size: 16px;
 }
 .song-description .lyric{
 	height: 200px;
